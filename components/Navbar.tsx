@@ -2,25 +2,59 @@
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaCrown } from 'react-icons/fa';
 import { FaBars, FaXmark } from 'react-icons/fa6';
 
 export default function Navbar() {
 
-    const [isOpen,setIsOpen] = useState<Boolean>(false);
+    const [isOpen,setIsOpen] = useState<boolean>(false);
+    const [activeSection, setActiveSection] = useState<string>('home');
     const pathname = usePathname();
 
     const navLinks = [
-        {name: 'Home', href: '/'},
+        {name: 'Home', href: '/', section: 'home'},
         {name: 'Gallery', href: '/gallery'},
-        {name: 'Contact', href: '/#contact'},
+        {name: 'Contact', href: '/#contact', section: 'contact'},
+        
     ];
 
-    const isActiveMenu = (href:String) => {
-        //if (href === '/') return pathname === '/';
-       if(href.startsWith('/#')) return pathname === '/';
-        console.log("Pathname: ",pathname)
+    useEffect(() => {
+
+        if(pathname !== '/') return;
+
+        const sections = document.querySelectorAll('section[id]');
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if(entry.isIntersecting){
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            {
+                threshold: 0.6 // 30% page is visible {50% - 0.5 , 60% - 0.6}
+            }
+        );
+
+        sections.forEach((section) => {
+            observer.observe(section);
+        });
+
+        return () => {
+            sections.forEach((section) => {
+                observer.unobserve(section);
+            });
+        };
+    }, [pathname]);
+
+    const isActiveMenu = (href?:string, section?:string) => {
+        // if (href === '/') 
+        //     return pathname === '/' && hash === '';
+        if(pathname === '/' && section) 
+            return activeSection === section;
+
         return pathname === href;
     }
 
@@ -44,13 +78,13 @@ export default function Navbar() {
                     {navLinks.map((link) => (
                         <Link href={link.href} key={link.href}
                         className={`relative px-3 py-2 text-sm font-medium transition-colors duration-300 ${
-                          isActiveMenu(link.href)
+                          isActiveMenu(link.href, link.section)
                             ? 'text-[var(--royal-gold)]'
                             : 'text-gray-300 hover:text-[var(--royal-gold)]'
                         }`}
                         >
                             {link.name}
-                            {isActiveMenu(link.href) && (
+                            {isActiveMenu(link.href, link.section) && (
                                 <motion.div
                                 layoutId='navbar-indicator'
                                 className='absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--royal-gold)]'
@@ -86,7 +120,7 @@ export default function Navbar() {
                             <Link href={link.href} key={link.href}
                             onClick={() => setIsOpen(false)}
                             className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                              isActiveMenu(link.href)
+                                isActiveMenu(link.href, link.section)
                                 ? 'bg-[var(--royal-gold)]/30 text-[var(--royal-gold)]'
                                 : 'text-gray-300 hover:bg-[var(--royal-gold)]/20'
                             }`}

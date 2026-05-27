@@ -7,7 +7,7 @@ import { HeroSectionProps } from '@/Interfaces/Interface';
 
 export default function Hero({ heroReference, opacity, scale }:HeroSectionProps) {
   return (
-    <section ref={heroReference} className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section ref={heroReference} id='home' className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black via-[var(--royal-maroon)]/20 to-black" />
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-72 h-72 bg-[var(--royal-gold)] rounded-full opacity-10 blur-[120px] animate-pulse" />

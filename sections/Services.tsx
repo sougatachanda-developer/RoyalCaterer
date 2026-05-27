@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 px-4 bg-gradient-to-b from-black to-[var(--royal-gray)]">
+    <section id="home" className="py-24 px-4 bg-gradient-to-b from-black to-[var(--royal-gray)]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

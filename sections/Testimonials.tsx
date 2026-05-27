@@ -5,7 +5,7 @@ import { FaStar } from 'react-icons/fa'
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 px-4 bg-gradient-to-b from-[var(--royal-gray)] to-black">
+    <section id="home" className="py-24 px-4 bg-gradient-to-b from-[var(--royal-gray)] to-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
